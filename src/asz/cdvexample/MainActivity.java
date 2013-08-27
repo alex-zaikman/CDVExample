@@ -1,5 +1,7 @@
 package asz.cdvexample;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,12 +23,15 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText; 
 import android.widget.LinearLayout;
+import asz.model.ApiMT;
+import asz.model.CDVFactory;
+import asz.model.util.CallBack;
 
 public class MainActivity extends Activity  implements CordovaInterface{
 
 	public final String NAME_SPASE = "ASZNSP";
 
-	public static CordovaWebView cdv;
+	public static ApiMT cdv;
 	private String TAG = "ASZ_CORDOVA_ACTIVITY";
 	private final ExecutorService threadPool = Executors.newCachedThreadPool();
 
@@ -41,22 +46,20 @@ public class MainActivity extends Activity  implements CordovaInterface{
 
 			@Override
 			public void onClick(View v) {
-				//	LinearLayout l = (LinearLayout) findViewById(R.id.mainl);
-				//	l.removeView(cdv);
-
-				Intent intent = new Intent(getApplicationContext(), NextActivity.class);
-				startActivity(intent);	
+				
+			//	Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+			//	startActivity(intent);	
 			}
 
 		};
 		btn.setOnClickListener(n);
 
 
-		Modle.MConfig c = new Modle.MConfig();
-		c.activity=this;
-		c.url="http://cto.timetoknow.com/test/index.html";
-		c.javascriptInterface = this;
-		c.nameSpace = NAME_SPASE;
+	//	CDVFactory.MConfig c = new CDVFactory.MConfig();
+	//	c.activity=this;
+	//	c.url="http://cto.timetoknow.com/test/index.html";
+	//	c.javascriptInterface = this;
+	//	c.nameSpace = NAME_SPASE;
 
 
 
@@ -68,10 +71,18 @@ public class MainActivity extends Activity  implements CordovaInterface{
 			}
 		};
 
-		c.webViewClient=client;
+	//	c.webViewClient=client;
 
 		LinearLayout l = (LinearLayout) this.findViewById(R.id.mainl);
-		cdv = Modle.buildCordovaWebView(c);
+	
+		cdv = new ApiMT("http://cto.timetoknow.com/test/index.html", new CallBack(){
+			
+			@Override
+			public void call(String msg){
+				msg+="";
+			}
+			
+		}, this);
 		
 		
 		
@@ -88,42 +99,32 @@ public class MainActivity extends Activity  implements CordovaInterface{
 
 			@Override
 			public void onClick(View v) {
-				String command = jscommand.getText().toString();
-				jscommand.setText("");
+				//String command = jscommand.getText().toString();
+				//jscommand.setText("");
 
-				//echomsg('yo yo yo!!!!'  ,"+NAME_SPASE+".nativesuccess   , "+NAME_SPASE+".nativefaliure  )
+				List<String> params = new ArrayList<String>();
+				params.add("1");
+				params.add("2");
 				
-				String ccc="javascript:add(33, 2 , function(msg){"+NAME_SPASE+".nativesuccess(msg);} , function(msg){"+NAME_SPASE+".nativefaliure(msg);} )";
-				
-			//	ccc = "javascript:ASZNSP.nativesuccess('me here!!!')"; 
-				cdv.loadUrl(ccc);
+				cdv.testjs("add", params, new CallBack(){
+					
+					@Override
+					public void call(String msg){
+						Log.d(TAG , "success:  "+msg);					
+					}
+				}, new CallBack(){
 
-				//TODO
-
+					@Override
+					public void call(String msg){
+						Log.d(TAG , "failed:  "+msg);		
+					}
+				});
 			}
-
 		};
 		btndo.setOnClickListener(nd);
-
-
-
-		cdv.reload();
-
-
-
 	}
 
-	//============================================================================================================
 
-
-	@JavascriptInterface
-	public void nativesuccess(String  msg){
-		Log.d(TAG , "nativesuccess:  "+msg);
-	}
-	@JavascriptInterface
-	public void nativefaliure(String msg){
-		Log.d(TAG , "nativefaliure:  "+msg);
-	}
 	//=====================================================================================================
 
 	@Override
@@ -138,11 +139,11 @@ public class MainActivity extends Activity  implements CordovaInterface{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (cdv != null) {
-			cdv
-			.loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
-			cdv.loadUrl("about:blank");
-			cdv.handleDestroy();
+		if (cdv.getCordovaWebView() != null) {
+			
+			cdv.getCordovaWebView().loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
+			cdv.getCordovaWebView().loadUrl("about:blank");
+			cdv.getCordovaWebView().handleDestroy();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package asz.cdvexample;
+package asz.model;
 
 import org.apache.cordova.Config;
 import org.apache.cordova.CordovaWebView;
@@ -6,10 +6,10 @@ import org.apache.cordova.CordovaWebView;
 import android.app.Activity;
 import android.webkit.WebViewClient;
 
-public class Modle {
+public class CDVFactory {
 
 	private static final Object lock = new Object();
-	private static Modle instance=null;
+	private static CDVFactory instance=null;
 	public CordovaWebView cwv;
 	public static MConfig config = new MConfig();
 
@@ -31,7 +31,7 @@ public class Modle {
 		return ret;
 	}
 	
-	private Modle(){	
+	private CDVFactory(){	
 		Config.init(config.activity);
 		cwv = new CordovaWebView(config.activity);
 
@@ -45,12 +45,12 @@ public class Modle {
 		cwv.loadUrl(config.url);
 	}
 
-	public static Modle the(){
+	public static CDVFactory the(){
 
 		if(instance==null){
 			synchronized(lock){
 				if(instance==null) 
-					instance = new Modle();
+					instance = new CDVFactory();
 			}
 		}
 		return instance;

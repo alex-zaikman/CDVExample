@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import asz.model.CDVFactory;
 
 public class NextActivity extends Activity implements CordovaInterface {
 
@@ -28,7 +29,7 @@ public class NextActivity extends Activity implements CordovaInterface {
 		setContentView(R.layout.activity_next);
 		
 		
-		Modle.MConfig c = new Modle.MConfig();
+		CDVFactory.MConfig c = new CDVFactory.MConfig();
 		c.activity=this;
 		c.url="http://www.ynet.co.il";
 
@@ -45,7 +46,7 @@ public class NextActivity extends Activity implements CordovaInterface {
 		  c.webViewClient=client;
 		
 		LinearLayout l = (LinearLayout) this.findViewById(R.id.mainlnext);
-		cdv = Modle.buildCordovaWebView(c);
+		cdv = CDVFactory.buildCordovaWebView(c);
 		l.addView(cdv);
 	}
 
