@@ -17,6 +17,8 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import asz.model.ApiMT;
 import asz.model.util.CallBack;
 
@@ -48,7 +50,7 @@ public class MainActivity extends Activity  implements CordovaInterface{
 		btn.setOnClickListener(n);
 
 
-		cdv = new ApiMT("http://cto.timetoknow.com/test/index.html", new CallBack(){
+		cdv = new ApiMT("http://cto.timetoknow.com/lms/js/libs/t2k/t2k.html", new CallBack(){
 
 			@Override
 			public void call(String msg){
@@ -59,7 +61,7 @@ public class MainActivity extends Activity  implements CordovaInterface{
 
 		//--------------------------------------------------------------------------------------------------
 
-		//final EditText jscommand = (EditText) findViewById(R.id.command);
+		
 
 		Button btndo = (Button) findViewById(R.id.btnDo);
 
@@ -70,26 +72,62 @@ public class MainActivity extends Activity  implements CordovaInterface{
 				//String command = jscommand.getText().toString();
 				//jscommand.setText("");
 
-				List<String> params = new ArrayList<String>();
-				params.add("1");
-				params.add("2");
-
-				cdv.testjs("add", params, new CallBack(){
+				
+				cdv.loadApi(new CallBack(){
 
 					@Override
 					public void call(String msg){
-						Log.d(TAG , "success:  "+msg);					
+						Log.d(TAG , "success:  "+msg);	
+						TextView out = (TextView) findViewById(R.id.output);
+						out.setText("success:  "+msg);
 					}
 				}, new CallBack(){
 
 					@Override
 					public void call(String msg){
-						Log.d(TAG , "failed:  "+msg);		
+						Log.d(TAG , "failed:  "+msg);
+						TextView out = (TextView) findViewById(R.id.output);
+						out.setText("failed:  "+msg);
 					}
 				});
+			
+//				cdv.logInMF("'deva.teacher'", "'123456'", new CallBack(){
+//
+//					@Override
+//					public void call(String msg){
+//						Log.d(TAG , "success:  "+msg);	
+//						TextView out = (TextView) findViewById(R.id.output);
+//						out.setText("success:  "+msg);
+//					}
+//				}, new CallBack(){
+//
+//					@Override
+//					public void call(String msg){
+//						Log.d(TAG , "failed:  "+msg);
+//						TextView out = (TextView) findViewById(R.id.output);
+//						out.setText("failed:  "+msg);
+//					}
+//				});
+//				
+				
+				
+				
+			
+				
+				
+				
+				
 			}
 		};
+		
+		
+		
+		
 		btndo.setOnClickListener(nd);
+		
+		LinearLayout mv = (LinearLayout) findViewById(R.id.mainl);
+		mv.addView(cdv.getWebView());
+		
 	}
 
 	//=====================================================================================================

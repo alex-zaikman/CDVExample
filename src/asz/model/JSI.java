@@ -57,10 +57,10 @@ public class JSI {
 		Double df = putCallBack(faliure);
 
 
-		String fsuccess = " function(msg){ "+ this.namespace+".jsReturnVal( msg, '"+ ds + "' , '" +df+ "' );} ,";	
+		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( msg, '"+ ds + "' , '" +df+ "' );} ,";	
 
 
-		String ffaliure = " function(msg){ "+this.namespace+".jsReturnVal( msg, '"+ df + "' , '" +ds+ "' );}";	
+		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( msg, '"+ df + "' , '" +ds+ "' );}";	
 
 
 		String jparams="";	
