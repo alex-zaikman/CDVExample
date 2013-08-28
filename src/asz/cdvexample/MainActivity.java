@@ -5,26 +5,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.cordova.Config;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.JavascriptInterface;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText; 
-import android.widget.LinearLayout;
 import asz.model.ApiMT;
-import asz.model.CDVFactory;
 import asz.model.util.CallBack;
 
 public class MainActivity extends Activity  implements CordovaInterface{
@@ -46,52 +39,27 @@ public class MainActivity extends Activity  implements CordovaInterface{
 
 			@Override
 			public void onClick(View v) {
-				
-			//	Intent intent = new Intent(getApplicationContext(), NextActivity.class);
-			//	startActivity(intent);	
+				//TODO
+				//	Intent intent = new Intent(getApplicationContext(), NextActivity.class);
+				//	startActivity(intent);	
 			}
 
 		};
 		btn.setOnClickListener(n);
 
 
-	//	CDVFactory.MConfig c = new CDVFactory.MConfig();
-	//	c.activity=this;
-	//	c.url="http://cto.timetoknow.com/test/index.html";
-	//	c.javascriptInterface = this;
-	//	c.nameSpace = NAME_SPASE;
-
-
-
-		WebViewClient client =new WebViewClient(){
-
-			@Override
-			public void onPageFinished(WebView view, String url) {
-				Log.d(TAG , "onPageFinished loadded:"+url);
-			}
-		};
-
-	//	c.webViewClient=client;
-
-		LinearLayout l = (LinearLayout) this.findViewById(R.id.mainl);
-	
 		cdv = new ApiMT("http://cto.timetoknow.com/test/index.html", new CallBack(){
-			
+
 			@Override
 			public void call(String msg){
 				msg+="";
 			}
-			
+
 		}, this);
-		
-		
-		
-	//	l.addView(cdv);
 
+		//--------------------------------------------------------------------------------------------------
 
-		//=============================================================
-
-		final EditText jscommand = (EditText) findViewById(R.id.command);
+		//final EditText jscommand = (EditText) findViewById(R.id.command);
 
 		Button btndo = (Button) findViewById(R.id.btnDo);
 
@@ -105,9 +73,9 @@ public class MainActivity extends Activity  implements CordovaInterface{
 				List<String> params = new ArrayList<String>();
 				params.add("1");
 				params.add("2");
-				
+
 				cdv.testjs("add", params, new CallBack(){
-					
+
 					@Override
 					public void call(String msg){
 						Log.d(TAG , "success:  "+msg);					
@@ -124,7 +92,6 @@ public class MainActivity extends Activity  implements CordovaInterface{
 		btndo.setOnClickListener(nd);
 	}
 
-
 	//=====================================================================================================
 
 	@Override
@@ -139,11 +106,10 @@ public class MainActivity extends Activity  implements CordovaInterface{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (cdv.getCordovaWebView() != null) {
-			
-			cdv.getCordovaWebView().loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
-			cdv.getCordovaWebView().loadUrl("about:blank");
-			cdv.getCordovaWebView().handleDestroy();
+		if (cdv.getWebView() != null) {
+			cdv.getWebView().loadUrl("javascript:try{cordova.require('cordova/channel').onDestroy.fire();}catch(e){console.log('exception firing destroy event from native');};");
+			cdv.getWebView().loadUrl("about:blank");
+			((CordovaWebView)cdv.getWebView()).handleDestroy();
 		}
 	}
 
@@ -158,7 +124,6 @@ public class MainActivity extends Activity  implements CordovaInterface{
 		super.onResume();
 		Log.d(TAG, "onResume");
 	}
-
 
 	@Override
 	public Activity getActivity() {
@@ -186,7 +151,6 @@ public class MainActivity extends Activity  implements CordovaInterface{
 			Intent intent, int resultCode) {
 		Log.d(TAG, "startActivityForResult is unimplemented");
 	}
-
 
 
 }

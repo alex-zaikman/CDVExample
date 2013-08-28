@@ -23,15 +23,13 @@
         android:text="do it" >
     </Button>
 
-    <EditText
-        android:id="@+id/command"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/output"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="js command"
-        android:ems="15" >
+        android:text="TextView" />
 
-        <requestFocus />
-    </EditText>
+   
 
     <LinearLayout
         android:id="@+id/mainl"

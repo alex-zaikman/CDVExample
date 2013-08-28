@@ -54,7 +54,7 @@ public class ApiMT  {
 		
 	}
 
-	public CordovaWebView getCordovaWebView(){
+	public WebView getWebView(){
 		return this.webview;
 	}
 	
@@ -142,18 +142,9 @@ public class ApiMT  {
 		return jsi;
 	}
 
-	protected WebView getInnerView(){
-		return webview;
-	}
-
-	
 	//==========================================================================================================
 	
 
-
-
-	
-	//============
 	
 
 }
