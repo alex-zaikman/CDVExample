@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import asz.model.util.CallBack;
@@ -57,10 +58,9 @@ public class JSI {
 		Double df = putCallBack(faliure);
 
 
-		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( msg, '"+ ds + "' , '" +df+ "' );} ,";	
+		String fsuccess = " function(msg){ window."+ this.namespace+".jsReturnVal( JSON.stringify(msg), '"+ ds + "' , '" +df+ "' );} ,";	
 
-
-		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( msg, '"+ df + "' , '" +ds+ "' );}";	
+		String ffaliure = " function(msg){ window."+this.namespace+".jsReturnVal( JSON.stringify(msg), '"+ df + "' , '" +ds+ "' );}";	
 
 
 		String jparams="";	
@@ -72,7 +72,11 @@ public class JSI {
 		}
 
 		String jscommand="javascript:"+jsFuncName+"(" +jparams + fsuccess + ffaliure+ ");" ;
-	
+		
+		
+		jscommand="javascript:try{ "+jsFuncName+"(" +jparams + fsuccess + ffaliure+ ");   }catch(err){ window."+this.namespace+".jsReturnVal(  err.message , '"+ df + "' , '" +ds+ "' ); }" ;
+		
+		
 		webview.loadUrl(jscommand);
 		
 

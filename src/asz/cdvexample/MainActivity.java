@@ -69,29 +69,8 @@ public class MainActivity extends Activity  implements CordovaInterface{
 
 			@Override
 			public void onClick(View v) {
-				//String command = jscommand.getText().toString();
-				//jscommand.setText("");
-
 				
-				cdv.loadApi(new CallBack(){
-
-					@Override
-					public void call(String msg){
-						Log.d(TAG , "success:  "+msg);	
-						TextView out = (TextView) findViewById(R.id.output);
-						out.setText("success:  "+msg);
-					}
-				}, new CallBack(){
-
-					@Override
-					public void call(String msg){
-						Log.d(TAG , "failed:  "+msg);
-						TextView out = (TextView) findViewById(R.id.output);
-						out.setText("failed:  "+msg);
-					}
-				});
-			
-//				cdv.logInMF("'deva.teacher'", "'123456'", new CallBack(){
+//				cdv.loadApi(new CallBack(){
 //
 //					@Override
 //					public void call(String msg){
@@ -108,7 +87,25 @@ public class MainActivity extends Activity  implements CordovaInterface{
 //						out.setText("failed:  "+msg);
 //					}
 //				});
-//				
+			
+				cdv.logInMF("'deva.teacher'", "'123456'", new CallBack(){
+
+					@Override
+					public void call(String msg){
+						Log.d(TAG , "success:  "+msg);	
+						TextView out = (TextView) findViewById(R.id.output);
+						out.setText("success:  "+msg);
+					}
+				}, new CallBack(){
+
+					@Override
+					public void call(String msg){
+						Log.d(TAG , "failed:  "+msg);
+						TextView out = (TextView) findViewById(R.id.output);
+						out.setText("failed:  "+msg);
+					}
+				});
+				
 				
 				
 				
